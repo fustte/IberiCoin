@@ -6,7 +6,7 @@
 
 ## Instalación
 
-### Prerrequisitos
+### Requisitos
 
 - Python 3.x
 - SQLite
