@@ -28,7 +28,13 @@
 
 4.  Configura las variables de entorno:
     Crea un archivo .env en el directorio raíz del proyecto con el siguiente contenido:
-        #DATABASE_URI_WALLET=carpeta_y_nombre_de_tu_base_de_datos.sqlite
+        SECRET_KEY=tu_secreto_aqui
+        API_KEY=Escribe_aqui_tu_apikey
+        COINAPI_URL=https://rest.coinapi.io/v1/exchangerate
+        DATABASE_URI=sqlite:///movements.sqlite3
+        DATABASE_URI_MOV = 'movements.sqlite3'
+        DATABASE_URI_HIST = 'price_hist.sqlite3'
+        DATABASE_URI_WALLET=carpeta_y_nombre_de_tu_base_de_datos.sqlite
 
 #### Uso
 
