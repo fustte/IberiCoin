@@ -242,7 +242,7 @@ def calculate():
         to_eur = amount * prices[from_currency]
         result = to_eur / prices[to_currency]
 
-    # Formatear el resultado con 8 decimales si es menor que 1, y con 6 decimales en caso contrario
+    
     formatted_result = f"{result:.8f}" if result < 1 else f"{result:.6f}"
 
     return jsonify({'result': formatted_result})
