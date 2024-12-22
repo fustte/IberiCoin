@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Estado de la Inversión</h2>
+<p>Euros Gastados: {{ euros_gastados }}</p>
+<p>Valor Actual de Criptomonedas: {{ valor_actual }}</p>
+<h3>Balances Detallados</h3>
+<ul>
+    {% for currency, balance in balances %}
+        <li>Moneda: {{ currency }}, Balance: {{ balance }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

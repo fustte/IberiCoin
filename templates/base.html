@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IberiCoin</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.5.5/css/pico.min.css">
+    <style>
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        header h1, footer p {
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .navbar a[aria-current="page"] {
+            font-weight: bold;
+            text-decoration: underline;
+            pointer-events: none;
+            color: grey;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #e2e2e2;
+        }
+        main {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a IberiCoin</h1>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}" aria-current="{{ 'page' if request.endpoint == 'index' }}">Inicio</a>
+            <a href="{{ url_for('purchase') }}" aria-current="{{ 'page' if request.endpoint == 'purchase' }}">Comprar o transferir</a>
+            <a href="{{ url_for('status') }}" aria-current="{{ 'page' if request.endpoint == 'status' }}">Estado de la cartera</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 IberiCoin. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

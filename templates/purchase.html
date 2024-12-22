@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Compra de Criptomonedas</h2>
+<form method="POST" action="{{ url_for('purchase') }}">
+    <label for="from_currency">Moneda de Origen:</label>
+    <select id="from_currency" name="from_currency" required onchange="updateToCurrencyOptions()">
+        {% for currency in available_currencies %}
+            <option value="{{ currency }}">{{ currency }}</option>
+        {% endfor %}
+    </select>
+    <p id="balance_info"></p>
+
+    <label for="to_currency">Moneda de Destino:</label>
+    <select id="to_currency" name="to_currency" required>
+        <option value="" disabled selected>Selecciona una moneda</option>
+        {% for currency in target_cryptocurrencies %}
+            <option value="{{ currency }}">{{ currency }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="amount">Cantidad:</label>
+    <input type="number" step="0.00000001" id="amount" name="amount" required>
+
+    <button type="button" onclick="calculate()">Calcular</button>
+    <p id="result"></p>
+
+    <button type="submit">Realizar Operación</button>
+</form>
+
+{% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+{% endif %}
+
+<script>
+    const balanceDict = {{ balance_dict|tojson }};
+
+    function updateToCurrencyOptions() {
+        const fromCurrency = document.getElementById('from_currency').value;
+        const toCurrencySelect = document.getElementById('to_currency');
+        const balanceInfo = document.getElementById('balance_info');
+
+        for (let option of toCurrencySelect.options) {
+            option.disabled = option.value === fromCurrency;
+        }
+
+        // Mostrar la cantidad disponible de la moneda seleccionada
+        balanceInfo.textContent = fromCurrency ? `Tienes ${balanceDict[fromCurrency]} ${fromCurrency} disponibles.` : '';
+
+        // Si la opción seleccionada es la misma que la de "Moneda de Origen", reseteamos la selección
+        if (toCurrencySelect.value === fromCurrency) {
+            toCurrencySelect.value = "";
+        }
+    }
+
+    function calculate() {
+        const fromCurrency = document.getElementById('from_currency').value;
+        const toCurrency = document.getElementById('to_currency').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+
+        if (!fromCurrency || !toCurrency || isNaN(amount)) {
+            alert("Por favor, selecciona las monedas y introduce una cantidad válida.");
+            return;
+        }
+
+        // Realizar una llamada a la API para obtener el precio de la moneda
+        fetch(`/calculate?from_currency=${fromCurrency}&to_currency=${toCurrency}&amount=${amount}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').textContent = `Recibirás aproximadamente ${data.result} ${toCurrency}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Hubo un error al calcular la cantidad.");
+            });
+    }
+
+    // Inicializa las opciones de moneda de destino al cargar la página
+    document.addEventListener('DOMContentLoaded', (event) => {
+        updateToCurrencyOptions();
+    });
+</script>
+{% endblock %}
+
+

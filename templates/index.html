@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>MOVIMIENTOS</h2>
+<form method="POST" action="{{ url_for('add_funds_route') }}">
+    <label for="amount">Añadir Fondos en EUR:</label>
+    <input type="number" id="amount" name="amount" required>
+    <button type="submit">Añadir Fondos</button>
+</form>
+
+{% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+{% endif %}
+
+{% if movements %}
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Origen</th>
+                <th>Cantidad</th>
+                <th>Destino</th>
+                <th>Cantidad</th>
+                <th>Precio Unidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for movement in movements %}
+                <tr>
+                    <td>{{ movement[0] }}</td>
+                    <td>{{ movement[1] }}</td>
+                    <td>{{ movement[2] }}</td>
+                    <td>{{ movement[3] }}</td>
+                    <td>{{ movement[4] }}</td>
+                    <td>{{ movement[5] }}</td>
+                    <td>{% if movement[2] == 'EUR' %}{{ movement[3] / movement[5] }} EUR{% else %}{{ movement[5] / movement[3] }} {{ movement[4] }}{% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>SIN MOVIMIENTOS.</p>
+{% endif %}
+{% endblock %}
